@@ -116,10 +116,99 @@ INSERT INTO dbo.BookSold
     Amount
 )
 VALUES
-(   0,    -- BookID - int
-    NULL, -- CustomerID - int
-    NULL, -- BookCode - int
-    NULL, -- Date - datetime
-    NULL, -- Price - int
-    NULL  -- Amount - int
+(   1,    -- BookID - int
+    1, -- CustomerID - int
+    1, -- BookCode - int
+    '20210106', -- Date - datetime
+    30, -- Price - int
+    12 -- Amount - int
+    ),
+(   2,    -- BookID - int
+    1, -- CustomerID - int
+    2, -- BookCode - int
+    '20210106', -- Date - datetime
+    40, -- Price - int
+    13  -- Amount - int
+    ),
+(   3,    -- BookID - int
+    2, -- CustomerID - int
+    3, -- BookCode - int
+    '20210107', -- Date - datetime
+    50, -- Price - int
+    14  -- Amount - int
+    ),
+(   4,    -- BookID - int
+    2, -- CustomerID - int
+    4, -- BookCode - int
+    '20210107', -- Date - datetime
+    60, -- Price - int
+    15  -- Amount - int
+    ),
+(   5,    -- BookID - int
+    3, -- CustomerID - int
+    5, -- BookCode - int
+    '20210108', -- Date - datetime
+    70, -- Price - int
+    16  -- Amount - int
+    ),
+(   6,    -- BookID - int
+    3, -- CustomerID - int
+    5, -- BookCode - int
+    '20210108', -- Date - datetime
+    70, -- Price - int
+    16 -- Amount - int
+    ),
+(   7,    -- BookID - int
+   4, -- CustomerID - int
+    4, -- BookCode - int
+    '20210109', -- Date - datetime
+    60, -- Price - int
+    15  -- Amount - int
+    ),
+(   8,    -- BookID - int
+    4, -- CustomerID - int
+    3, -- BookCode - int
+    '20210109', -- Date - datetime
+    50, -- Price - int
+    14  -- Amount - int
+    ),
+(   9,    -- BookID - int
+    5, -- CustomerID - int
+    2, -- BookCode - int
+    '20210110', -- Date - datetime
+    40, -- Price - int
+    13  -- Amount - int
+    ),
+(   10,    -- BookID - int
+    5, -- CustomerID - int
+    1, -- BookCode - int
+    '20210110', -- Date - datetime
+    30, -- Price - int
+    12 -- Amount - int
     )
+-- Yêu cầu 2 
+CREATE VIEW Book_Lisr AS
+SELECT Book.BookCode, TiTle, Book.Price, Amount FROM dbo.BookSold
+JOIN dbo.Book
+ON Book.BookCode = BookSold.BookCode
+-- Yêu Cầu 3 
+CREATE VIEW CustomerDetail AS
+SELECT BookSold.CustomerID, Customer.CustomerName, Customer.Address, Book.Title, Amount FROM dbo.BookSold
+JOIN dbo.Book
+ON Book.BookCode = BookSold.BookCode
+JOIN dbo.Customer
+ON Customer.CustomerID = BookSold.CustomerID
+--yÊU Câù 4
+CREATE VIEW Customer_LastMoth AS
+SELECT BookSold.CustomerID, Customer.CustomerName, Customer.Address, Book.Title FROM dbo.BookSold
+JOIN dbo.Book
+ON Book.BookCode = BookSold.BookCode
+JOIN dbo.Customer
+ON Customer.CustomerID = BookSold.CustomerID
+WHERE DATEDIFF(MONTH, BookSold.Date, GETDATE() ) = 1
+--Yêu cầu 5
+create view Bill as
+select BookSold.CustomerID, Customer.CustomerName, sum(BookSold.Price * BookSold.Amount) as TotalPay from BookSold
+join Customer
+on Customer.CustomerID = BookSold.CustomerID
+group by BookSold.CustomerID, Customer.CustomerName
