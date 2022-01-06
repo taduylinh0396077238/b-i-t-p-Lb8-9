@@ -1,0 +1,7 @@
+IF EXISTS ( SELECT * FROM sys.databases WHERE name = 'Lab9_2')
+	DROP DATABASE Lab9_2
+	CREATE DATABASE Lab9_2
+	GO 
+	USE Lab9_2
+	GO
+CREATE 	
